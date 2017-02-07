@@ -1,7 +1,6 @@
 //Project assignment for 2-2.
 //Banking project where the user will be adding/removing bank accounts from an ATM
 
-import java.util.DoubleSummaryStatistics;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -14,7 +13,6 @@ public class Main {
     static double withdrawAmount;
     static int lastSelection;
 
-    //welcome and prompt user for name
     public static void main(String[] args) throws Exception {
         Map<String, Double> hashMap = new HashMap();
 
@@ -29,11 +27,9 @@ public class Main {
 
             userName = scanner.nextLine();
 
-            //check if they have an account
             if (hashMap.containsKey(userName)) {
                 System.out.println("Welcome back to your account," + userName);
             }
-            //once account is created, prompt user for deposit amount (userBalance)
             else {
                 System.out.println("It looks like you don't have an account. A new one will be created for you.");
                 System.out.println("Please enter a new username.");
@@ -44,28 +40,37 @@ public class Main {
             }
 
 
-            //show options
             System.out.println("What would you like to do?");
             System.out.println("Type 1 for balance check.");
             System.out.println("Type 2 for withdraw money.");
             System.out.println("Type 3 to cancel.");
 
-            //make selection
             selection = Integer.parseInt(scanner.nextLine());
             String selectionName = " ";
-            if (selection == 1) {
-                selectionName = "Balance Check";
-            } else if (selection == 2) {
-                selectionName = "Withdraw Funds";
-            } else if (selection == 3) {
-                selectionName = "Cancel";
+            switch (selection){
+                case 1:
+                    selectionName = "Balance Check";
+                    break;
+                case 2:
+                    selectionName = "Withdraw Funds";
+                    break;
+                case 3:
+                    selectionName = "Cancel";
+                    break;
             }
+//            if (selection == 1) {
+//                selectionName = "Balance Check";
+//            } else if (selection == 2) {
+//                selectionName = "Withdraw Funds";
+//            } else if (selection == 3) {
+//                selectionName = "Cancel";
+//            }
             System.out.println("You have selected " + selectionName);
 
             while ((selection == 1) || (selection == 2)) {
                 switch (selection) {
                     case 1:
-                        System.out.println("Your balance is " + userBalance);
+                        System.out.println("Your balance is $" + hashMap.get(userName));
                         System.out.println("What would you like to do?");
                         System.out.println("Type 1 for balance check.");
                         System.out.println("Type 2 for withdraw money.");
@@ -76,13 +81,13 @@ public class Main {
                         System.out.println("How much money would you like to withdraw?");
                         withdrawAmount = Integer.parseInt(scanner.nextLine());
 
-                        if (withdrawAmount > userBalance) {
+                        if (withdrawAmount > hashMap.get(userName)) {
                             throw new Exception("You cannot withdraw more than your available balance!");
-                        } else if ((withdrawAmount <= userBalance) && (userBalance > 0)) {
+                        } else if ((withdrawAmount <= hashMap.get(userName)) && (hashMap.get(userName) > 0)) {
                             System.out.println("You may take your money.");
-                            double newBalance = userBalance - withdrawAmount;
-                            System.out.println("Your new account balance is $" + newBalance);
-                            //System.out.println("Have a nice day!");
+                            hashMap.put(userName, hashMap.get(userName)-withdrawAmount);
+
+                            System.out.println("Your new account balance is $" + hashMap.get(userName));
                             System.out.println("What would you like to do?");
                             System.out.println("Type 1 for balance check.");
                             System.out.println("Type 2 for withdraw money.");
@@ -112,8 +117,6 @@ public class Main {
                     break;
             }
 
-            //loop back to the beginning to ask the next user for their userName, commented out below shows the contents of hashMap
-            //System.out.println(hashMap);
         }
     }
 }
